@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 from time import time
 from hashlib import sha256
 
@@ -24,7 +25,13 @@ def load_word_list(lang='en'):
     return words
 
 def set_seed():
-    seed = int(time())
+    seed_offset = int(sys.argv[3])
+    try:
+        dttm = sys.argv[4]
+        ts = int(datetime.fromisoformat(dttm).timestamp())//60
+    except:
+        ts = int(time())//60
+    seed = (ts*seed_offset) % (2**32)
     npr.seed(seed)
     return seed
 
